@@ -135,7 +135,7 @@ const DatePickerComp = ({
                     :
                     <DatePicker
                         dateFormat={format}
-                        placeholderText={format}
+                        placeholderText={format.toLocaleUpperCase()}
                         timeFormat="HH:mm"
                         selected={startDate}
                         onChange={onChangeSingle}
