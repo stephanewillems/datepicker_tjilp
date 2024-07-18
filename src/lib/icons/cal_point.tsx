@@ -1,4 +1,4 @@
-import React, { SVGProps } from 'react'
+import { SVGProps } from 'react'
 
 const CalPointIcon = (props: SVGProps<SVGSVGElement>) => (
     <svg width="16" height="16" viewBox="0 0 16 16" {...props}>
