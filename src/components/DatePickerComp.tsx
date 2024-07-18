@@ -65,6 +65,10 @@ const DatePickerComp = ({
     return (
         <>
           
+                   <p className="z-40">Selected Date(s): {dateOne} {dateTwo}</p>
+            <label className="text-xs text-muted-900 -tracking-[0.3px] z-40 ">
+                {selectedIcon === "range" ? "Datum (Start -> Eind)" : "Datum"}
+            </label>
 
             <DateWrapper
                 selectedIcon={selectedIcon}
@@ -74,10 +78,6 @@ const DatePickerComp = ({
                 setStartDate={setStartDate}
                 startDate={startDate}
             >
-                   <p className="z-40">Selected Date(s): {dateOne} {dateTwo}</p>
-            <label className="text-xs text-muted-900 -tracking-[0.3px] z-40 ">
-                {selectedIcon === "range" ? "Datum (Start -> Eind)" : "Datum"}
-            </label>
 
                 {selectedIcon === "range" ?
                     <>
