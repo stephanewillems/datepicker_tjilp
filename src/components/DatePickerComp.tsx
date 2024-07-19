@@ -1,5 +1,5 @@
-import  { useEffect, useState } from "react";
-import DatePicker  from "react-datepicker";
+import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
 import "./datepicker.css";
 import moment from "moment";
 import DateWrapper from "./rangePicker/DateWrapper";
@@ -8,7 +8,8 @@ import CalPointIcon from "../lib/icons/cal_point";
 import { type Placement } from "@floating-ui/react";
 
 interface DatePickerCompProps {
-    format?: string;
+    format?: string; // default is "dd.MM.YYYY HH:SS"
+    timeFormat?: string; // default is "HH:mm"
     showTimeSelectOnly?: boolean;
     maxDate?: Date;
     minDate?: Date;
@@ -16,12 +17,15 @@ interface DatePickerCompProps {
     minTime?: Date;
     disabled?: boolean;
     popperPlacement?: Placement;
+    datePickerType?: "range" | "point";
     onDatesChange: (startDate: Date | null | string, endDate: Date | null | string) => void;
+    onClear?: () => void;
 
 }
 
 const DatePickerComp = ({
-    format = "dd.MM.YYYY HH:SS",
+    format = "dd.MM.YYYY HH:mm",
+    timeFormat = "HH:mm",
     showTimeSelectOnly = false,
     maxDate,
     minDate,
@@ -29,30 +33,43 @@ const DatePickerComp = ({
     minTime,
     disabled,
     popperPlacement,
-    onDatesChange
-}:DatePickerCompProps) => {
+    datePickerType,
+    onDatesChange,
+    onClear,
+}: DatePickerCompProps) => {
 
     const icons = [
         { id: "range", icon: <CalRangeIcon />, text: "Date Range", placeholder: `${format} -> ${format}` },
         { id: "point", icon: <CalPointIcon />, text: "Date Point", placeholder: `${format}` },
     ];
-    const [selectedIcon, setSelectedIcon] = useState<string>("range");
+    const [selectedIcon, setSelectedIcon] = useState<string>("");
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
 
     useEffect(() => {
-      if (onDatesChange) {
-        const isDateValid = (date: Date | null) => moment(date).isValid();
-        if (selectedIcon === "point" && isDateValid(startDate)) {
-            onDatesChange(moment(startDate).format(format.toLocaleUpperCase()), null);
-        } else if (selectedIcon === "range" && isDateValid(startDate) && isDateValid(endDate)){
-            onDatesChange(
-              moment(startDate).format(format.toLocaleUpperCase()), 
-              moment(endDate).format(format.toLocaleUpperCase())  
-            );
+        if (datePickerType === "point") {
+            setSelectedIcon("point")
+            setEndDate(null)
+        } else if (datePickerType === "range") {
+            setSelectedIcon("range")
+        } else {
+            setSelectedIcon("range")
         }
-      }
-  }, [startDate, endDate, onDatesChange]);
+    })
+
+    useEffect(() => {
+        if (onDatesChange) {
+            const isDateValid = (date: Date | null) => moment(date).isValid();
+            if (selectedIcon === "point" && isDateValid(startDate)) {
+                onDatesChange(moment(startDate).format(format.toLocaleUpperCase()), null);
+            } else if (selectedIcon === "range" && isDateValid(startDate) && isDateValid(endDate)) {
+                onDatesChange(
+                    moment(startDate).format(format.toLocaleUpperCase()),
+                    moment(endDate).format(format.toLocaleUpperCase())
+                );
+            }
+        }
+    }, [startDate, endDate, onDatesChange]);
 
 
     const onChangeSingle = (date: Date | null) => {
@@ -64,26 +81,28 @@ const DatePickerComp = ({
     const dateTwo = moment(endDate).isValid() ? moment(endDate).format(format) : null;
     return (
         <>
-          
-                   <p className="z-40">Selected Date(s): {dateOne} {dateTwo}</p>
+
+            <p className="z-40">Selected Date(s): {dateOne} {dateTwo}</p>
             <label className="text-xs text-muted-900 -tracking-[0.3px] z-40 ">
                 {selectedIcon === "range" ? "Datum (Start -> Eind)" : "Datum"}
             </label>
 
             <DateWrapper
                 selectedIcon={selectedIcon}
+                datePickerType={datePickerType}
                 setSelectedIcon={setSelectedIcon}
                 icons={icons}
                 setEndDate={setEndDate}
                 setStartDate={setStartDate}
                 startDate={startDate}
+                onClear={onClear}
             >
 
                 {selectedIcon === "range" ?
                     <>
                         <DatePicker
                             dateFormat={format}
-                            timeFormat="HH:mm"
+                            timeFormat={timeFormat}
                             selected={startDate}
                             onChange={(date) => setStartDate(date)}
                             startDate={startDate as Date}
@@ -113,7 +132,7 @@ const DatePickerComp = ({
                         <DatePicker
                             dateFormat={format}
                             placeholderText={format.toLocaleUpperCase()}
-                            timeFormat="HH:mm"
+                            timeFormat={timeFormat}
                             selected={endDate}
                             onChange={(date) => setEndDate(date)}
                             startDate={startDate as Date}
@@ -140,7 +159,7 @@ const DatePickerComp = ({
                     <DatePicker
                         dateFormat={format}
                         placeholderText={format.toLocaleUpperCase()}
-                        timeFormat="HH:mm"
+                        timeFormat={timeFormat}
                         selected={startDate}
                         onChange={onChangeSingle}
                         {...(showTimeSelectOnly && { showTimeSelectOnly })}
@@ -162,7 +181,7 @@ const DatePickerComp = ({
                 }
 
             </DateWrapper>
-         
+
         </>
     );
 };

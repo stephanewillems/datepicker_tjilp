@@ -12,14 +12,17 @@ interface DateWrapperProps {
     setStartDate: React.Dispatch<React.SetStateAction<Date | null>>;
     setEndDate: React.Dispatch<React.SetStateAction<Date | null>>;
     startDate?: Date | null;
+    onClear?: () => void;
+    datePickerType?: "range" | "point";
 }
 
-const DateWrapper = ({ children, selectedIcon, setSelectedIcon, icons, setEndDate, setStartDate, startDate }: DateWrapperProps) => {
+const DateWrapper = ({ children, selectedIcon, setSelectedIcon, icons, setEndDate, setStartDate, startDate, onClear, datePickerType }: DateWrapperProps) => {
     const [dropdown, setDropdown] = useState<boolean>(false);
     const refDropdown = createRef<HTMLDivElement>();
     const refButton = createRef<HTMLDivElement>();
 
     const handleDropdown = () => {
+        if (datePickerType) return;
         setDropdown(!dropdown);
     };
 
@@ -41,6 +44,7 @@ const DateWrapper = ({ children, selectedIcon, setSelectedIcon, icons, setEndDat
         } else {
             setStartDate!(null);
         }
+        onClear && onClear();
     }
 
 
@@ -51,10 +55,10 @@ const DateWrapper = ({ children, selectedIcon, setSelectedIcon, icons, setEndDat
                 onClick={handleDropdown}
                 ref={refButton}
             >
-                <div className="relative cursor-pointer">
+                <div className={`relative ${datePickerType === undefined && 'cursor-pointer'}`}>
                     {selectedIconObject?.icon}
                     <AnimatePresence>
-                        <motion.div
+                        {datePickerType === undefined && <motion.div
                             key={"chevron"}
                             className="absolute top-[11px] left-[15px] w-[6px]"
                             initial={{ rotate: 0 }}
@@ -63,7 +67,7 @@ const DateWrapper = ({ children, selectedIcon, setSelectedIcon, icons, setEndDat
                             transition={{ duration: 0.2 }}
                         >
                             <ChevronDownIcon className="w-full fill-shade-500" />
-                        </motion.div>
+                        </motion.div>}
                     </AnimatePresence>
                 </div>
                 <AnimatePresence>
