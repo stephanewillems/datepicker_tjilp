@@ -55,10 +55,10 @@ const DateWrapper = ({ children, selectedIcon, setSelectedIcon, icons, setEndDat
                 onClick={handleDropdown}
                 ref={refButton}
             >
-                <div className={`relative ${datePickerType === undefined && 'cursor-pointer'}`}>
+                <div className={`relative ${!datePickerType && 'cursor-pointer'}`}>
                     {selectedIconObject?.icon}
                     <AnimatePresence>
-                        {datePickerType === undefined && <motion.div
+                        {!datePickerType && <motion.div
                             key={"chevron"}
                             className="absolute top-[11px] left-[15px] w-[6px]"
                             initial={{ rotate: 0 }}

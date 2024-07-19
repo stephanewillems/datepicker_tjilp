@@ -42,6 +42,8 @@ const DatePickerComp = ({
     onClear,
 }: DatePickerCompProps) => {
 
+    console.log(datePickerType)
+
     const icons = [
         { id: "range", icon: <CalRangeIcon />, text: "Date Range", placeholder: `${format} -> ${format}` },
         { id: "point", icon: <CalPointIcon />, text: "Date Point", placeholder: `${format}` },
@@ -71,7 +73,7 @@ const DatePickerComp = ({
         } else {
             setSelectedIcon("range")
         }
-    })
+    }, [datePickerType]);
 
     useEffect(() => {
         let formatted;
