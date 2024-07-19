@@ -11,7 +11,7 @@ interface DatePickerCompProps {
     format?: string; // default is "dd.MM.YYYY HH:SS"
     timeFormat?: string; // default is "HH:mm"
     formatReturn?: string; // default is "YYYY-MM-DD HH:SS"
-    showTimeSelectOnly?: boolean;
+    showTimeSelectOnly?: boolean; // default is false
     maxDate?: Date;
     minDate?: Date;
     maxTime?: Date;

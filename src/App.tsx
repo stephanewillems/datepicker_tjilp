@@ -24,7 +24,7 @@ function App() {
     <div className='flex flex-col items-center justify-center w-screen h-screen'>
       <p>Debug: Selected Date : {startDate?.toString()} - {endDate?.toString()}</p>
       <div className='w-96'>
-        <DatePickerComp onDatesChange={handleDates} datePickerType="point" onClear={clearFn} />
+        <DatePickerComp onDatesChange={handleDates} onClear={clearFn} />
       </div>
     </div>
   )
