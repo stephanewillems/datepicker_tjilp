@@ -141,9 +141,8 @@ const DatePickerComp = ({
                             {...(disabled && { disabled })}
                             showTimeSelect
                             maxDate={maxDate}
-                            minDate={minDate}
+                            minDate={minDate ? minDate : startDate as Date}
                             maxTime={maxTime}
-                            minTime={minTime}
                             className="pl-2 bg-transparent text-muted-900 font-tjilp"
                             selectsEnd
                             showMonthDropdown
