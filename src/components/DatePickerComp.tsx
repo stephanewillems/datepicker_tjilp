@@ -16,6 +16,8 @@ interface DatePickerCompProps {
     minDate?: Date;
     maxTime?: Date;
     minTime?: Date;
+    initDate?: Date | null;
+    finalDate?: Date | null;
     disabled?: boolean;
     popperPlacement?: Placement;
     datePickerType?: "range" | "point";
@@ -33,6 +35,8 @@ const DatePickerComp = ({
     minDate,
     maxTime,
     minTime,
+    initDate,
+    finalDate,
     disabled,
     popperPlacement,
     datePickerType,
@@ -47,6 +51,18 @@ const DatePickerComp = ({
     const [selectedIcon, setSelectedIcon] = useState<string>("");
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
+
+    useEffect(() => {
+        if (initDate) {
+            setStartDate(initDate);
+        }
+    }, [initDate]);
+
+    useEffect(() => {
+        if (finalDate) {
+            setEndDate(finalDate);
+        }
+    }, [finalDate]);
 
     useEffect(() => {
         if (datePickerType === "point") {

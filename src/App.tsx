@@ -20,11 +20,13 @@ function App() {
     setEndDate(null)
   }
 
+  const initialDate = new Date('2022-01-01')
+
   return (
     <div className='flex flex-col items-center justify-center w-screen h-screen'>
       <p>Debug: Selected Date : {startDate?.toString()} - {endDate?.toString()}</p>
       <div className='w-96'>
-        <DatePickerComp onDatesChange={handleDates} onClear={clearFn} />
+        <DatePickerComp onDatesChange={handleDates} onClear={clearFn} initDate={initialDate} />
       </div>
     </div>
   )
