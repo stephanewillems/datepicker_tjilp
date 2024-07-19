@@ -11,7 +11,6 @@ interface DatePickerCompProps {
     format?: string; // default is "dd.MM.YYYY HH:SS"
     timeFormat?: string; // default is "HH:mm"
     formatReturn?: string; // default is "YYYY-MM-DD HH:SS"
-    showTimeSelectOnly?: boolean; // default is false
     maxDate?: Date;
     minDate?: Date;
     maxTime?: Date;
@@ -30,7 +29,6 @@ const DatePickerComp = ({
     format = "dd.MM.YYYY HH:mm",
     timeFormat = "HH:mm",
     formatReturn,
-    showTimeSelectOnly = false,
     maxDate,
     minDate,
     maxTime,
@@ -134,7 +132,6 @@ const DatePickerComp = ({
                             showTimeSelect
                             placeholderText={format.toLocaleUpperCase()}
                             showMonthDropdown
-                            {...(showTimeSelectOnly && { showTimeSelectOnly })}
                             {...(disabled && { disabled })}
                             maxDate={maxDate}
                             minDate={minDate}
@@ -161,7 +158,6 @@ const DatePickerComp = ({
                             onChange={(date) => setEndDate(date)}
                             startDate={startDate as Date}
                             endDate={endDate as Date}
-                            {...(showTimeSelectOnly && { showTimeSelectOnly })}
                             {...(disabled && { disabled })}
                             showTimeSelect
                             maxDate={maxDate}
@@ -185,7 +181,6 @@ const DatePickerComp = ({
                         timeFormat={timeFormat}
                         selected={startDate}
                         onChange={onChangeSingle}
-                        {...(showTimeSelectOnly && { showTimeSelectOnly })}
                         {...(disabled && { disabled })}
                         maxDate={maxDate}
                         minDate={minDate}
