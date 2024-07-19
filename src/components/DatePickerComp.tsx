@@ -10,6 +10,7 @@ import { type Placement } from "@floating-ui/react";
 interface DatePickerCompProps {
     format?: string; // default is "dd.MM.YYYY HH:SS"
     timeFormat?: string; // default is "HH:mm"
+    formatReturn?: string; // default is "YYYY-MM-DD HH:SS"
     showTimeSelectOnly?: boolean;
     maxDate?: Date;
     minDate?: Date;
@@ -26,6 +27,7 @@ interface DatePickerCompProps {
 const DatePickerComp = ({
     format = "dd.MM.YYYY HH:mm",
     timeFormat = "HH:mm",
+    formatReturn,
     showTimeSelectOnly = false,
     maxDate,
     minDate,
@@ -58,14 +60,25 @@ const DatePickerComp = ({
     })
 
     useEffect(() => {
+        let formatted;
+        const formatTime = format.split(':');
+        const formatUppercase = `${formatTime[0].toUpperCase()}:${formatTime[1]}`;
+
+        if (formatReturn) {
+            formatted = formatReturn;
+        } else {
+            formatted = formatUppercase;
+        }
+
         if (onDatesChange) {
             const isDateValid = (date: Date | null) => moment(date).isValid();
             if (selectedIcon === "point" && isDateValid(startDate)) {
-                onDatesChange(moment(startDate).format(format.toLocaleUpperCase()), null);
+                onDatesChange(moment(startDate).format(formatted), null);
+
             } else if (selectedIcon === "range" && isDateValid(startDate) && isDateValid(endDate)) {
                 onDatesChange(
-                    moment(startDate).format(format.toLocaleUpperCase()),
-                    moment(endDate).format(format.toLocaleUpperCase())
+                    moment(startDate).format(formatted),
+                    moment(endDate).format(formatted)
                 );
             }
         }
@@ -76,13 +89,8 @@ const DatePickerComp = ({
         setStartDate(date);
         setEndDate(null);
     };
-
-    const dateOne = moment(startDate).isValid() ? moment(startDate).format(format) : null;
-    const dateTwo = moment(endDate).isValid() ? moment(endDate).format(format) : null;
     return (
         <>
-
-            <p className="z-40">Selected Date(s): {dateOne} {dateTwo}</p>
             <label className="text-xs text-muted-900 -tracking-[0.3px] z-40 ">
                 {selectedIcon === "range" ? "Datum (Start -> Eind)" : "Datum"}
             </label>
